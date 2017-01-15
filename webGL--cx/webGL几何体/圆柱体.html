@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../three.js"></script>
+</head>
+<body>
+    <div id="webGL-scene"></div>
+    <div id="controller" style="position:fixed; right:0; top:0;">
+        <button id="sphere">sphere</button>
+        <button id="cyLinder">cyLinder</button>
+        <button id="torus">torus</button>
+        <button id="knot">knot</button>
+    </div>
+</body>
+<script>
+    //圆柱  CyLinderGeometry
+    //radiusTop 顶部尺寸
+    //radiusBottom 底部尺寸
+    //height 高度
+    //segmentsX制定x轴分段数
+    //segmentsY
+    //segmentsZ
+    //openEnded 制定网格顶部和底部是否封闭
+    //
+    //甜甜圈
+    //radius圆圈的尺寸
+    //tube半径
+    //radialSegments 长度分段数
+    //tubularSegments 宽度分段数
+
+    //环面 TorusKnotGeometry 环面纽结的属性
+    //radius 圆环的尺寸
+    //tube 半径
+    //radialSegments 长度分段数
+    //tubularSegments 宽度分段的数
+    //detail 为环面增加额外细节
+    var scene=new THREE.Scene();
+    var camera=new THREE.PerspectiveCamera();
+    camera.position.set(-20,30,40);
+    camera.lookAt(new THREE.Vector3(10,0,0));
+
+    var renderer=new THREE.WebGLRenderer();
+    renderer.setClearColor(new THREE.Color(0xf8f8f8,1.0));
+    renderer.setSize(window.innerWidth,window.innerHeight);
+    renderer.shadowMapEnabled=true;
+
+    function createMesh(geom){
+        var meshMaterial=new THREE.MeshNormalMaterial();
+        var wireMaterial=new THREE.MeshBasicMaterial();
+        wireMaterial.wireframe=true;
+        return THREE.SceneUtils.createMultiMaterialObject(geom,[meshMaterial,wireMaterial])
+    }
+    var Mesh;
+    var sphere=createMesh(new THREE.SphereGeometry(10,50,50,0,Math.PI*2));
+    var cyLinder=createMesh(new THREE.CylinderGeometry(20,20,20,20,100));
+    var torus=createMesh(new THREE.TorusGeometry(10,2,20,20,Math.PI*2));
+    var knot=createMesh(new THREE.TorusKnotGeometry(10,1,60,100,2,9,1));
+
+    Mesh=sphere;
+    scene.add(Mesh);
+
+    var spotLight=new THREE.SpotLight(0xffffff);
+    spotLight.position.set(-40,55,-11);
+    scene.add(spotLight);
+
+    function render(){
+        Mesh.rotation.y+=0.01;
+        renderer.render(scene,camera);
+        requestAnimationFrame(render)
+    }
+//    setTimeout(function(){
+//        scene.remove(sphere);
+//        scene.add(cyLinder);
+//        sphere=cyLinder;
+//    },1000);
+    document.getElementById("webGL-scene").appendChild(renderer.domElement);
+    render();
+    document.getElementById("sphere").onclick=function(){
+        scene.remove(Mesh);
+        Mesh=sphere;
+        scene.add(Mesh);
+    }
+    document.getElementById("cyLinder").onclick=function(){
+        scene.remove(Mesh);
+
+        Mesh=cyLinder;
+        scene.add(Mesh)
+
+    }
+    document.getElementById("torus").onclick=function(){
+        scene.remove(Mesh);
+        Mesh=torus;
+        scene.add(Mesh);
+    }
+    document.getElementById("knot").onclick=function(){
+        scene.remove(Mesh);
+        Mesh=knot;
+        scene.add(Mesh);
+    }
+
+
+</script>
+</html>

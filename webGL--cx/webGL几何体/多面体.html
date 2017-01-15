@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../three.js"></script>
+</head>
+<body>
+
+</body>
+<script>
+    //多面几何体 polyhedronGeometry
+    //vertices 多面体的顶点
+    //faces 多面体的面
+    //radius 多面体的大小
+    //detail 为多面体添加额外的细节
+    var scene=new THREE.Scene;
+    var camera=new THREE.PerspectiveCamera();
+    camera.lookAt(scene.position);
+    var renderer=new THREE.WebGLRenderer();
+    renderer.setClearColor(new THREE.Color(0xeeeeee));
+    renderer.setSize(window.innerWidth,window.innerHeight);
+    renderer.shadowMapEnabled=true;
+
+    var polyhedron=creatMesh(new THREE.PolyhedronGeometry(vertices,faces,10))
+
+
+</script>
+</html>
